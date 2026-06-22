@@ -1,6 +1,6 @@
 package src;
 
-// File: src/BankApplication.java
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

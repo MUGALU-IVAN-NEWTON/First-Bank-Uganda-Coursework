@@ -1,10 +1,10 @@
 package src;
 
-// File: src/DatabaseManager.java
+
 import java.sql.*;
 
 public class DatabaseManager {
-    // This is the missing connection string pointing directly to your BankDB.accdb file
+    // This is the connection string pointing directly to  BankDB.accdb file
     private static final String DB_URL = "jdbc:ucanaccess://BankDB.accdb";
 
     /**

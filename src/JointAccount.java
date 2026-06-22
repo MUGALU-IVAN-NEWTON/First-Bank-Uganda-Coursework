@@ -1,6 +1,6 @@
 package src;
 
-// File: src/JointAccount.java
+
 public class JointAccount extends Account {
     private String secondaryNin;
     

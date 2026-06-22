@@ -2,7 +2,7 @@ package src;
 
 // File: src/Account.java
 public abstract class Account {
-    // Common state attributes required by the coursework paper
+    // Common state attributes required for all account types
     private String firstName;
     private String lastName;
     private String nin;
@@ -40,7 +40,7 @@ public abstract class Account {
         return this.openingDeposit >= getMinimumDeposit();
     }
 
-    // Computes age relative to the coursework session year (2026)
+    // Computes age relative to the year (2026)
     public int getDerivedAge() {
         return 2026 - birthYear;
     }
