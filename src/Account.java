@@ -1,6 +1,6 @@
 package src;
 
-// File: src/Account.java
+
 public abstract class Account {
     // Common state attributes required for all account types
     private String firstName;
