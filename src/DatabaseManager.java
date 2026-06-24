@@ -4,12 +4,10 @@ package src;
 import java.sql.*;
 
 public class DatabaseManager {
-    // This is the connection string pointing directly to  BankDB.accdb file
+    // Connection string pointing directly to  BankDB.accdb file
     private static final String DB_URL = "jdbc:ucanaccess://BankDB.accdb";
 
-    /**
-     * Generates a unique, sequential account number matching the pattern: BRANCHCODE-YYYY-xxxxxx
-     */
+    
     public static synchronized String generateAccountNumber(String branchName) {
         String branchCode = switch (branchName) {
             case "Kampala" -> "KLA";
@@ -23,7 +21,7 @@ public class DatabaseManager {
         int currentYear = 2026;
         int nextSequence = 1;
 
-        // Query the highest existing sequential index directly from your Accounts table
+        
         String checkSQL = "SELECT accountNumber FROM Accounts WHERE accountNumber LIKE '" + branchCode + "-" + currentYear + "-%' ORDER BY accountNumber DESC";
 
         try (Connection conn = DriverManager.getConnection(DB_URL);
@@ -45,9 +43,7 @@ public class DatabaseManager {
         return String.format("%s-%d-%06d", branchCode, currentYear, nextSequence);
     }
 
-    /**
-     * Inserts the account details directly into the MS Access Accounts Table
-     */
+   
     public static boolean saveAccount(Account account) {
         // Explicit column names mapped to prevent indexing structural shifts
         String insertSQL = "INSERT INTO Accounts (accountNumber, firstName, lastName, accountType, branch, dob, phoneNumbe, openingDep, email, nin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

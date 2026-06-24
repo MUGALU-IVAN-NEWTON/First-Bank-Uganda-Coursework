@@ -60,7 +60,7 @@ public class BankApplication extends JFrame {
         for (int y = 2026; y >= 1940; y--) cmbYear.addItem(y);
         cmbMonth = new JComboBox<>(months);
         cmbDay = new JComboBox<>();
-        updateDays(); // Initial day population
+        updateDays(); 
 
         // Auto-update days when Month or Year selections shift
         ItemListener dobUpdater = e -> { if (e.getStateChange() == ItemEvent.SELECTED) updateDays(); };

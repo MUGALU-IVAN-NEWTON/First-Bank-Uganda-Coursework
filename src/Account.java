@@ -2,7 +2,7 @@ package src;
 
 
 public abstract class Account {
-    // Common state attributes required for all account types
+    // attributes required for all account types
     private String firstName;
     private String lastName;
     private String nin;
@@ -31,11 +31,11 @@ public abstract class Account {
         this.openingDeposit = openingDeposit;
     }
 
-    // Abstract methods to be overridden by subclasses (Polymorphism)
+    // Abstract methods to be overridden by subclasses 
     public abstract double getMinimumDeposit();
     public abstract String getAccountTypeName();
 
-    // The missing method your GUI needs to check if the deposit is valid
+    
     public boolean isValidDeposit() {
         return this.openingDeposit >= getMinimumDeposit();
     }
