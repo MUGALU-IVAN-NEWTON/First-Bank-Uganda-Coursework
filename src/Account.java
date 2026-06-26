@@ -2,7 +2,7 @@ package src;
 
 
 public abstract class Account {
-    // attributes required for all account types
+    
     private String firstName;
     private String lastName;
     private String nin;
@@ -15,7 +15,7 @@ public abstract class Account {
     private double openingDeposit;
     private String accountNumber;
 
-    // Constructor to clean and map all incoming form values
+    
     public Account(String firstName, String lastName, String nin, String email, 
                    String phoneNumber, int birthYear, int birthMonth, int birthDay, 
                    String branch, double openingDeposit) {
@@ -31,7 +31,7 @@ public abstract class Account {
         this.openingDeposit = openingDeposit;
     }
 
-    // Abstract methods to be overridden by subclasses 
+    
     public abstract double getMinimumDeposit();
     public abstract String getAccountTypeName();
 
@@ -40,12 +40,12 @@ public abstract class Account {
         return this.openingDeposit >= getMinimumDeposit();
     }
 
-    // Computes age relative to the year (2026)
+   
     public int getDerivedAge() {
         return 2026 - birthYear;
     }
 
-    // Standard Getters and Setters for data extraction and persistence
+    
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
     public String getNin() { return nin; }

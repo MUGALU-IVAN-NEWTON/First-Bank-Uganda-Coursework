@@ -7,14 +7,14 @@ import java.awt.event.*;
 import java.util.Calendar;
 
 public class BankApplication extends JFrame {
-    // GUI Input Components
+    
     private JTextField txtFirst, txtLast, txtNIN, txtSecNIN, txtEmail, txtConfEmail, txtPhone, txtDeposit;
     private JPasswordField txtPIN, txtConfPIN;
     private JComboBox<Integer> cmbYear, cmbDay;
     private JComboBox<String> cmbMonth, cmbType, cmbBranch;
     private JTextArea txtSummary;
     
-    // Inline Error Validation Labels
+    
     private JLabel errFirst, errLast, errNIN, errSecNIN, errEmail, errPhone, errPIN, errDeposit;
 
     private final String[] months = {"January", "February", "March", "April", "May", "June", 
@@ -45,7 +45,7 @@ public class BankApplication extends JFrame {
         txtPIN = new JPasswordField(15); 
         txtConfPIN = new JPasswordField(15);
 
-        // Error message labels initialization
+        
         errFirst = createErrLabel(); 
         errLast = createErrLabel(); 
         errNIN = createErrLabel();
@@ -55,26 +55,26 @@ public class BankApplication extends JFrame {
         errPIN = createErrLabel(); 
         errDeposit = createErrLabel();
 
-        // DOB ComboBoxes Configuration
+       
         cmbYear = new JComboBox<>();
         for (int y = 2026; y >= 1940; y--) cmbYear.addItem(y);
         cmbMonth = new JComboBox<>(months);
         cmbDay = new JComboBox<>();
         updateDays(); 
 
-        // Auto-update days when Month or Year selections shift
+        
         ItemListener dobUpdater = e -> { if (e.getStateChange() == ItemEvent.SELECTED) updateDays(); };
         cmbYear.addItemListener(dobUpdater);
         cmbMonth.addItemListener(dobUpdater);
 
-        // Dropdown Lists
+        
         cmbType = new JComboBox<>(new String[]{"Savings", "Current", "Fixed Deposit", "Student", "Joint"});
         cmbBranch = new JComboBox<>(new String[]{"Kampala", "Gulu", "Mbarara", "Jinja", "Mbale"});
 
-        // Enable secondary NIN field only if Joint Account is selected
+       
         cmbType.addActionListener(e -> txtSecNIN.setEnabled("Joint".equals(cmbType.getSelectedItem())));
 
-        // Grid Layout Grid Mapping
+        
         int row = 0;
         addFormRow(formPanel, gbc, "First Name:", txtFirst, errFirst, row++);
         addFormRow(formPanel, gbc, "Last Name:", txtLast, errLast, row++);
@@ -86,7 +86,7 @@ public class BankApplication extends JFrame {
         addFormRow(formPanel, gbc, "4-6 Digit Security PIN:", txtPIN, null, row++);
         addFormRow(formPanel, gbc, "Confirm PIN:", txtConfPIN, errPIN, row++);
         
-        // Custom DOB Row Setup
+        
         gbc.gridy = row; gbc.gridx = 0; formPanel.add(new JLabel("Date of Birth:"), gbc);
         JPanel dobPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
         dobPanel.add(cmbYear); dobPanel.add(cmbMonth); dobPanel.add(cmbDay);
@@ -96,7 +96,7 @@ public class BankApplication extends JFrame {
         addFormRow(formPanel, gbc, "Target Branch:", cmbBranch, null, row++);
         addFormRow(formPanel, gbc, "Opening Deposit (UGX):", txtDeposit, errDeposit, row++);
 
-        // Action Buttons Setup
+       
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         JButton btnSubmit = new JButton("Submit Registration");
         JButton btnReset = new JButton("Reset Form");
@@ -105,7 +105,7 @@ public class BankApplication extends JFrame {
         btnSubmit.addActionListener(e -> processSubmission());
         btnReset.addActionListener(e -> resetFormFields());
 
-        // Summary Text Area Layout Setup
+        
         JPanel southPanel = new JPanel(new BorderLayout(5, 5));
         southPanel.setBorder(BorderFactory.createTitledBorder("Account Summary is Below:"));
         txtSummary = new JTextArea(4, 60);
@@ -155,20 +155,20 @@ public class BankApplication extends JFrame {
         cmbType.setSelectedIndex(0); cmbBranch.setSelectedIndex(0);
         txtSummary.setText("");
         
-        // Clear all inline errors cleanly
+        
         errFirst.setText(""); errLast.setText(""); errNIN.setText(""); errSecNIN.setText("");
         errEmail.setText(""); errPhone.setText(""); errPIN.setText(""); errDeposit.setText("");
     }
 
     private void processSubmission() {
-        // Clear out old error warning fields
+        
         errFirst.setText(""); errLast.setText(""); errNIN.setText(""); errSecNIN.setText("");
         errEmail.setText(""); errPhone.setText(""); errPIN.setText(""); errDeposit.setText("");
 
         StringBuilder errorsSummary = new StringBuilder();
         boolean valid = true;
 
-        // 1. Core Field Input Pattern Validation Rules
+        
         String fName = txtFirst.getText().trim();
         if (!fName.matches("[A-Za-z]{2,30}")) {
             errFirst.setText("Letters only (2-30 chars).");
@@ -219,7 +219,7 @@ public class BankApplication extends JFrame {
         int birthD = (int) cmbDay.getSelectedItem();
         int derivedAge = 2026 - birthY;
 
-        // Core Age Limits Rule Execution
+        
         if (derivedAge < 18 || derivedAge > 75) {
             errorsSummary.append("- General banking age policy restricted (18-75).\n"); valid = false;
         }
@@ -235,13 +235,13 @@ public class BankApplication extends JFrame {
             errorsSummary.append("- Opening deposit field parsing format error.\n"); valid = false;
         }
 
-        // If any initial rules fail, block operation and display error modal dialog box
+        
         if (!valid) {
             JOptionPane.showMessageDialog(this, errorsSummary.toString(), "Validation Core Matrix Alert", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // 2. Polymorphic Model Instantiation
+        
         Account newClientAccount = switch (type) {
             case "Savings" -> new SavingsAccount(fName, lName, nin, email, phone, birthY, birthM, birthD, (String) cmbBranch.getSelectedItem(), deposit);
             case "Current" -> new CurrentAccount(fName, lName, nin, email, phone, birthY, birthM, birthD, (String) cmbBranch.getSelectedItem(), deposit);
@@ -251,26 +251,26 @@ public class BankApplication extends JFrame {
             default -> null;
         };
 
-        // 3. Dynamic Deposit Limit Checking via Polymorphism
+       
         if (newClientAccount != null && !newClientAccount.isValidDeposit()) {
             errDeposit.setText("Below Min Limit: " + String.format("%,.0f", newClientAccount.getMinimumDeposit()) + " UGX");
             JOptionPane.showMessageDialog(this, "Deposit amount fails minimum financial rules assigned for: " + type, "Limits Exception Fail", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // 4. Generate Account Number sequence & Save to MS Access Database
+        
         String genAccNo = DatabaseManager.generateAccountNumber(newClientAccount.getBranch());
         newClientAccount.setAccountNumber(genAccNo);
 
         boolean saved = DatabaseManager.saveAccount(newClientAccount);
         if (saved) {
-            // 1. Your formatted output summary layout string
+       
             String outputStr = String.format("ACC: %s | %s %s | %s | %s | DOB %s | %s | Deposit %,.0f | %s\n",
                     newClientAccount.getAccountNumber(), newClientAccount.getLastName(), newClientAccount.getFirstName(),
                     newClientAccount.getAccountTypeName(), newClientAccount.getBranch(), newClientAccount.getDOBString(),
                     newClientAccount.getPhoneNumber(), newClientAccount.getOpeningDeposit(), newClientAccount.getEmail());
             
-            // 2. CHANGE THIS LINE: Use append() instead of setText() so it accumulates down the list
+            
             txtSummary.append(outputStr);
             
             JOptionPane.showMessageDialog(this, "Account provisioned and verified completely in DB record!", "Success Status", JOptionPane.INFORMATION_MESSAGE);

@@ -4,7 +4,7 @@ package src;
 import java.sql.*;
 
 public class DatabaseManager {
-    // Connection string pointing directly to  BankDB.accdb file
+    
     private static final String DB_URL = "jdbc:ucanaccess://BankDB.accdb";
 
     
@@ -29,8 +29,8 @@ public class DatabaseManager {
              ResultSet rs = stmt.executeQuery(checkSQL)) {
             
             if (rs.next()) {
-                String highestAcc = rs.getString("accountNumber"); // e.g., "KLA-2026-000001"
-                // Split the string by hyphens to grab the final numerical suffix
+                String highestAcc = rs.getString("accountNumber"); 
+            
                 String[] parts = highestAcc.split("-");
                 if (parts.length == 3) {
                     nextSequence = Integer.parseInt(parts[2]) + 1; // Auto-increment safely by 1
@@ -45,7 +45,7 @@ public class DatabaseManager {
 
    
     public static boolean saveAccount(Account account) {
-        // Explicit column names mapped to prevent indexing structural shifts
+        
         String insertSQL = "INSERT INTO Accounts (accountNumber, firstName, lastName, accountType, branch, dob, phoneNumbe, openingDep, email, nin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = DriverManager.getConnection(DB_URL);
@@ -58,7 +58,7 @@ public class DatabaseManager {
             pstmt.setString(5, account.getBranch());
             pstmt.setString(6, account.getDOBString());
             pstmt.setString(7, account.getPhoneNumber());
-            pstmt.setDouble(8, account.getOpeningDeposit()); // Double mapping matches your DB design change
+            pstmt.setDouble(8, account.getOpeningDeposit()); 
             pstmt.setString(9, account.getEmail());
             pstmt.setString(10, account.getNin());
             
